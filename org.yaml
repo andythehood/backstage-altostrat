@@ -61,12 +61,6 @@ apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   namespace: default
-  annotations:
-    backstage.io/managed-by-location: url:https://github.com/andythehood/currency-app/tree/main/catalog-info.yaml
-    backstage.io/managed-by-origin-location: url:https://github.com/andythehood/currency-app/blob/main/catalog-info.yaml
-    backstage.io/view-url: https://github.com/andythehood/currency-app/tree/main/catalog-info.yaml
-    backstage.io/edit-url: https://github.com/andythehood/currency-app/edit/main/catalog-info.yaml
-    backstage.io/source-location: url:https://github.com/andythehood/currency-app/tree/main/
   name: currency-api
   description: Open-source API for current and historical foreign exchange rates
     published by the European Central Bank
@@ -77,21 +71,6 @@ metadata:
     - url: https://www.frankfurter.app/docs/
       title: Frankfurter Docs
       icon: website
-  uid: 0549d95a-0a7c-4b97-98ca-bd465148390f
-  etag: bc314cd37596008062393f64ef1540cca752a4ce
-relations:
-  - type: apiConsumedBy
-    targetRef: component:default/currency-app
-    target:
-      kind: component
-      namespace: default
-      name: currency-app
-  - type: ownedBy
-    targetRef: group:default/bap-ce-apac
-    target:
-      kind: group
-      namespace: default
-      name: bap-ce-apac
 spec:
   type: openapi
   lifecycle: production
@@ -236,35 +215,11 @@ apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   namespace: default
-  annotations:
-    backstage.io/managed-by-location: file:/Users/andyhood/Projects/Backstage/backstage-latest/examples/entities.yaml
-    backstage.io/managed-by-origin-location: file:/Users/andyhood/Projects/Backstage/backstage-latest/examples/entities.yaml
   name: example-grpc-api
-  uid: 7f9007ac-8a00-4bf2-808b-8fb28fd32b48
-  etag: b3fc32252740dd8a028095e68dc652caeca28add
-relations:
-  - type: apiProvidedBy
-    targetRef: component:default/example-website
-    target:
-      kind: component
-      namespace: default
-      name: example-website
-  - type: ownedBy
-    targetRef: group:default/guests
-    target:
-      kind: group
-      namespace: default
-      name: guests
-  - type: partOf
-    targetRef: system:default/examples
-    target:
-      kind: system
-      namespace: default
-      name: examples
 spec:
   type: grpc
   lifecycle: experimental
-  owner: guests
+  owner: bap-ce-apac
   system: examples
   definition: |
     syntax = "proto3";
