@@ -231,3 +231,52 @@ spec:
     message ExampleMessage {
       string example = 1;
     };
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    backstage.io/kubernetes-label-selector: app=backstage
+    backstage.io/kubernetes-namespace: backstage
+    google.com/cloudbuild-projectId: gps-japac-apigeex
+    google.com/cloudbuild-location: asia-southeast1
+    google.com/cloudbuild-repoName: andythehood/backstage-dev
+  namespace: default
+  name: backstage-deployment
+  title: Backstage Deployment
+  description: Backstage Deployment on GKE
+  tags:
+    - backstage
+    - kubernetes
+
+spec:
+  type: service
+  lifecycle: production
+  owner: bap-ce-apac
+  dependsOn:
+    - Component:default/backstage-app
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  annotations:
+    github.com/project-slug: andythehood/backstage-latest
+  name: backstage-app
+  title: Backstage App
+  description: Backstage App
+  tags:
+    - react
+    - backstage
+  links:
+    - url: https://backstage-34.111.75.51.nip.io/
+      title: Backstage App
+      icon: website
+
+spec:
+  type: website
+  lifecycle: production
+  owner: bap-ce-apac
