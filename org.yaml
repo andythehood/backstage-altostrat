@@ -25,6 +25,9 @@ kind: User
 metadata:
   name: welylau
 spec:
+  profile:
+    displayName: Wely Lau
+    email: welylau@google.com
   memberOf: [bap-ce-apac]
 
 ---
@@ -37,6 +40,7 @@ spec:
   profile:
     displayName: Andy Hood
     email: andyhood@google.com
+    picture: https://lh3.googleusercontent.com/a/ACg8ocJNlgfnwHZutJztZV3JmhLji-mwugzbigJKHpWtv6lk1I9HZ3o=s96-c-rg-br100
   memberOf: [bap-ce-apac]
   
 ---
@@ -46,4 +50,7 @@ kind: User
 metadata:
   name: joeywong
 spec:
+  profile:
+    displayName: Joey Wong
+    email: joeywong@google.com
   memberOf: [bap-ce-apac]
