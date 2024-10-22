@@ -23,10 +23,27 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: wely
+  name: welylau
 spec:
-  type: internal
   memberOf: [bap-ce-apac]
 
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: andyhood
+spec:
+  profile:
+    displayName: Andy Hood
+    email: andyhood@google.com
+  memberOf: [bap-ce-apac]
   
-
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: joeywong
+spec:
+  memberOf: [bap-ce-apac]
