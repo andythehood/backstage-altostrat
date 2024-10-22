@@ -54,3 +54,225 @@ spec:
     displayName: Joey Wong
     email: joeywong@google.com
   memberOf: [bap-ce-apac]
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  namespace: default
+  annotations:
+    backstage.io/managed-by-location: url:https://github.com/andythehood/currency-app/tree/main/catalog-info.yaml
+    backstage.io/managed-by-origin-location: url:https://github.com/andythehood/currency-app/blob/main/catalog-info.yaml
+    backstage.io/view-url: https://github.com/andythehood/currency-app/tree/main/catalog-info.yaml
+    backstage.io/edit-url: https://github.com/andythehood/currency-app/edit/main/catalog-info.yaml
+    backstage.io/source-location: url:https://github.com/andythehood/currency-app/tree/main/
+  name: currency-api
+  description: Open-source API for current and historical foreign exchange rates
+    published by the European Central Bank
+  title: Currency API
+  tags:
+    - rest
+  links:
+    - url: https://www.frankfurter.app/docs/
+      title: Frankfurter Docs
+      icon: website
+  uid: 0549d95a-0a7c-4b97-98ca-bd465148390f
+  etag: bc314cd37596008062393f64ef1540cca752a4ce
+relations:
+  - type: apiConsumedBy
+    targetRef: component:default/currency-app
+    target:
+      kind: component
+      namespace: default
+      name: currency-app
+  - type: ownedBy
+    targetRef: group:default/bap-ce-apac
+    target:
+      kind: group
+      namespace: default
+      name: bap-ce-apac
+spec:
+  type: openapi
+  lifecycle: production
+  owner: bap-ce-apac
+  definition: >
+    openapi: 3.0.0
+
+    info:
+      title: Currency V1
+      description: |-
+        The Currency App uses the Frankfurter API to track foreign exchange references rates published
+        by the European Central Bank. The data refreshes around 16:00 CET every working day.
+      contact:
+        email: andyhood@google.com
+      version: 1.0.0
+
+    servers:
+      - url: https://api.frankfurter.app
+      - url: https://dev-34.120.21.215.nip.io/currency/v1
+      - url: https://eval-group.34-120-155-152.nip.io/currency/v1
+    tags:
+      - name: rates
+        description: Exchange Rates
+      - name: currencies
+        description: Currencies
+      - name: history
+        description: Historical Rates
+    security:
+      - ApiKeyAuth: []
+    paths:
+      /currencies:
+        get:
+          tags:
+            - currencies
+          summary: List currencies
+          description: Get list of current Currencies
+          operationId: listCurrencies
+
+          responses:
+            "200":
+              description: success
+              content:
+                application/json:
+                  schema:
+                    type: object
+
+            "400":
+              description: Invalid status value
+
+      /latest:
+        get:
+          tags:
+            - rates
+          summary: Get Exchange Rates
+          description: Get Exchange Rates
+          operationId: getRates
+          parameters:
+            - name: from
+              in: query
+              description: Currency to convert from
+              required: false
+              schema:
+                type: string
+                default: AUD
+            - name: to
+              in: query
+              description: Currency to convert to
+              required: false
+              schema:
+                type: string
+                default: USD
+            - name: amount
+              in: query
+              description: Amount to convert
+              required: false
+              schema:
+                type: number
+                default: 1
+
+          responses:
+            "200":
+              description: success
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    # items:
+            "400":
+              description: Invalid status value
+
+      /{date}:
+        get:
+          tags:
+            - history
+          summary: Get history
+          description: Get historical rates
+          operationId: getHistory
+
+          parameters:
+            - name: date
+              in: path
+              description: "Date Range. Examples: 2023-01-01 or 2023-01-01..2023-01-31 or 2023-01-01.."
+              required: true
+              schema:
+                type: string
+                default: 2023-01-01..
+            - name: from
+              in: query
+              description: Currency to convert from
+              required: false
+              schema:
+                type: string
+                default: AUD
+            - name: to
+              in: query
+              description: Currency to convert to
+              required: false
+              schema:
+                type: string
+                default: USD
+
+          responses:
+            "200":
+              description: success
+              content:
+                application/json:
+                  schema:
+                    type: object
+            "400":
+              description: Invalid status value
+
+    components:
+      securitySchemes:
+        ApiKeyAuth:
+          type: apiKey
+          name: apikey
+          in: query
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  namespace: default
+  annotations:
+    backstage.io/managed-by-location: file:/Users/andyhood/Projects/Backstage/backstage-latest/examples/entities.yaml
+    backstage.io/managed-by-origin-location: file:/Users/andyhood/Projects/Backstage/backstage-latest/examples/entities.yaml
+  name: example-grpc-api
+  uid: 7f9007ac-8a00-4bf2-808b-8fb28fd32b48
+  etag: b3fc32252740dd8a028095e68dc652caeca28add
+relations:
+  - type: apiProvidedBy
+    targetRef: component:default/example-website
+    target:
+      kind: component
+      namespace: default
+      name: example-website
+  - type: ownedBy
+    targetRef: group:default/guests
+    target:
+      kind: group
+      namespace: default
+      name: guests
+  - type: partOf
+    targetRef: system:default/examples
+    target:
+      kind: system
+      namespace: default
+      name: examples
+spec:
+  type: grpc
+  lifecycle: experimental
+  owner: guests
+  system: examples
+  definition: |
+    syntax = "proto3";
+
+    service Exampler {
+      rpc Example (ExampleMessage) returns (ExampleMessage) {};
+    }
+
+    message ExampleMessage {
+      string example = 1;
+    };
